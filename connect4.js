@@ -35,9 +35,6 @@ function makeHtmlBoard() {
   // click event
   top.addEventListener('click', handleClick);
 
-  // hover target
-  // top.addEventListener('mouseover', changeColor);
-
   for (let x = 0; x < WIDTH; x++) {
     let headCell = document.createElement('td');
     headCell.setAttribute('id', x);
