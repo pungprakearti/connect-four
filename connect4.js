@@ -9,11 +9,12 @@ const WIDTH = 7;
 const HEIGHT = 6;
 
 let currPlayer = 1; // active player: 1 or 2
-let boardJS = []; // array of rows, each row is array of cells  (board[y][x])
 
 /** makeBoard: create in-JS board structure:
  *    board = array of rows, each row is array of cells  (board[y][x])
  */
+
+let boardJS = [];
 
 function makeBoard() {
   for (let i = 0; i < HEIGHT; i++) {
@@ -25,21 +26,31 @@ function makeBoard() {
 /** makeHtmlBoard: make HTML table and row of column tops. */
 
 function makeHtmlBoard() {
-  // TODO: get "board" variable from the item in HTML w/ID of "board"
   let boardHTML = document.getElementById('board');
-  // TODO: add comment for this code
+
+  // create top of board for selecting when to drop pieces into play
   let top = document.createElement('tr');
   top.setAttribute('id', 'column-top');
+
+  // click event
   top.addEventListener('click', handleClick);
+
+  // hover target
+  // top.addEventListener('mouseover', changeColor);
 
   for (let x = 0; x < WIDTH; x++) {
     let headCell = document.createElement('td');
     headCell.setAttribute('id', x);
+
+    // on hover change color
+    headCell.setAttribute('onmouseover', "this.bgColor='orange'");
+    headCell.setAttribute('onmouseout', "this.bgColor='white'");
+
     top.append(headCell);
   }
   boardHTML.append(top);
 
-  // TODO: add comment for this code
+  // create the rest of the board
   for (var y = 0; y < HEIGHT; y++) {
     const row = document.createElement('tr');
     for (var x = 0; x < WIDTH; x++) {
@@ -49,29 +60,11 @@ function makeHtmlBoard() {
     }
     boardHTML.append(row);
   }
-
-  let hoverTarget = document.getElementById('column-top'); // variable to find top column
-  hoverTarget.style.borderColor = 'grey';
-  hoverTarget.addEventListener(
-    'mouseover',
-    function(event) {
-      // highlight the mouseover target
-      event.target.style.background = 'orange';
-
-      setTimeout(function() {
-        event.target.style.background = '';
-      }, 500);
-    },
-    false
-  );
-
-  hoverTarget.style.border = 'thick solid #0000FF';
 }
 
 /** findSpotForCol: given column x, return top empty y (null if filled) */
 
 function findSpotForCol(x) {
-  // TODO: write the real version of this, rather than always returning 0
   for (let i = boardJS.length - 1; i >= 0; i--) {
     if (boardJS[i][x] === null) {
       boardJS[i][x] = currPlayer;
@@ -84,7 +77,6 @@ function findSpotForCol(x) {
 /** placeInTable: update DOM to place piece into HTML board */
 
 function placeInTable(y, x) {
-  // TODO: make a div and insert into correct table cell
   if (y !== null) {
     let pieceInCell = document.createElement('div');
     pieceInCell.setAttribute('class', `piece p${currPlayer}`);
@@ -110,32 +102,20 @@ function handleClick(evt) {
   if (y === null) {
     return;
   }
+
+  // switch player after click
   currPlayer === 1 ? (currPlayer = 2) : (currPlayer = 1);
+
   // place piece in board and add to HTML table
-  // TODO: add line to update in-memory board
   placeInTable(y, x);
 
   // check for tie
-  // TODO: check if all cells in board are filled; if so call, call endGame
   if (checkTie(boardJS)) endGame(`It's a tie!`);
-
-  // if (
-  //   boardJS.forEach(function(val) {
-  //     return val.every(function(element) {
-  //       return element !== null;
-  //     });
-  //   })
-  // ) {
-  //   endGame(`It's a tie!`);
-  // }
 
   // check for win
   if (checkForWin()) {
     return endGame(`Player ${currPlayer} won!`);
   }
-
-  // switch players
-  // TODO: switch currPlayer 1 <-> 2
 }
 
 function checkTie(board) {
@@ -162,7 +142,7 @@ function checkForWin() {
     );
   }
 
-  // TODO: read and understand this code. Add comments to help you.
+  // get all winning positions to check for winner
 
   for (let y = 0; y < HEIGHT; y++) {
     for (let x = 0; x < WIDTH; x++) {

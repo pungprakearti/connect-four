@@ -6,10 +6,7 @@ td {
   border: solid 1px black;
 }
 
-/* pieces are div within game table cells: draw as colored circles */
-
 .piece {
-  /* TODO: make into circles */
   margin: 5px;
   width: 80%;
   height: 80%;
@@ -24,12 +21,7 @@ td {
   background-color: blue;
 }
 
+/* Lighten top row */
 #column-top * {
   border: 1px dotted gray;
 }
-
-/* TODO: make pieces red/blue,  depending on player 1/2 piece */
-
-/* column-top is table row of clickable areas for each column */
-
-/* TODO: make column-top row lighter and provide hover effect */
